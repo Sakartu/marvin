@@ -8,12 +8,11 @@ from operator import itemgetter
 import time
 
 class IssuePoller():
-    def __init__(self, conf, bot, username, project, sneer=False):
+    def __init__(self, conf, bot, username, project):
         self.conf = conf
         self.bot = bot
         self.username = username
         self.project = project
-        self.sneer = sneer
         self.timer = InfiniteTimer(int(self.conf.polltime), self.poll, immediate=True)
         self.oldevents = []
         self.newevents = []
@@ -49,12 +48,11 @@ class IssuePoller():
                         url=self.shorten(e['payload']['issue']['html_url']), 
                         title=e['payload']['issue']['title'])
                         results.append(result)
-                    if self.sneer:
-                        # Make him answer to his own events
-                        if action in constants.SNEER:
-                            remark = constants.SNEER[action][random.randint(
-                                1, len(constants.SNEER))]
-                            results.append(remark)
+                    # Make him answer to his own events
+                    if action in constants.SNEER:
+                        remark = constants.SNEER[action][random.randint(
+                            1, len(constants.SNEER_CLOSED))]
+                        results.append(remark)
             self.oldevents = self.newevents
             if not broadcast or not results:
                 return
