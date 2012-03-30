@@ -17,6 +17,7 @@ class MessageHandler(object):
         for pattern, handler in self.handlers.items():
             if re.compile(pattern).match(msg):
                 handler(user, channel, msg)
+                return
 
     def handle_question(self, user, channel, msg):
         n = random.randint(0, len(constants.EIGHTBALL) - 1) 
