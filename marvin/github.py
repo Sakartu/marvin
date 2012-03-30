@@ -53,7 +53,7 @@ class IssuePoller():
                         # Make him answer to his own events
                         if action in constants.SNEER:
                             remark = constants.SNEER[action][random.randint(
-                                1, len(constants.SNEER_CLOSED))]
+                                1, len(constants.SNEER))]
                             results.append(remark)
             self.oldevents = self.newevents
             if not broadcast or not results:
