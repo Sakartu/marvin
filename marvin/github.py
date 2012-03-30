@@ -34,14 +34,18 @@ class IssuePoller():
             oldids = map(itemgetter('id'), self.oldevents) if self.oldevents else []
             results = []
             for e in self.newevents:
-                if 'id' in e and e['id'] not in oldids and e['event'] == 'closed':
-                    result = '{name} closed {proj} issue {num} ({url}) "{title}"!'.format(
-                    proj=self.project,
-                    name=e['actor']['login'], 
-                    num=e['issue']['number'], 
-                    url=self.shorten(e['issue']['html_url']), 
-                    title=e['issue']['title'])
-                    results.append(result)
+                if 'id' in e and e['id'] not in oldids:
+                    if e['type'] != 'IssuesEvent':
+                        continue
+                    if e['payload']['action'] == 'closed' or e['payload']['action'] == 'opened':
+                        result = '{name} {action} {proj} issue {num} ({url}) "{title}"!'.format(
+                        proj=self.project,
+                        name=e['actor']['login'], 
+                        action=e['payload']['action'],
+                        num=e['payload']['issue']['number'], 
+                        url=self.shorten(e['payload']['issue']['html_url']), 
+                        title=e['payload']['issue']['title'])
+                        results.append(result)
             self.oldevents = self.newevents
             if not broadcast or not results:
                 return

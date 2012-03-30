@@ -27,5 +27,5 @@ ANSWERS = [
         "Do you want me to sit in a corner and rust or just fall apart where I'm standing?",
         ]
 
-URL_ISSUE_EVENTS = 'https://api.github.com/repos/{user}/{project}/issues/events'
+URL_ISSUE_EVENTS = 'https://api.github.com/repos/{user}/{project}/events'
 URL_SHORTEN = 'http://git.io'
