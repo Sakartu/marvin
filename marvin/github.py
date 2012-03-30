@@ -3,7 +3,7 @@ import urllib2
 import urllib
 import constants
 from infinite_timer import InfiniteTimer
-from operator import attrgetter
+from operator import itemgetter
 import time
 
 class IssuePoller():
@@ -13,9 +13,9 @@ class IssuePoller():
         self.username = username
         self.project = project
         self.timer = InfiniteTimer(int(self.conf.polltime), self.poll, immediate=True)
-        self.poll(broadcast=False)
         self.oldevents = []
         self.newevents = []
+        self.poll(broadcast=False)
 
     def start(self):
         self.timer.start()
@@ -31,10 +31,10 @@ class IssuePoller():
         try:
             resp = urllib2.urlopen(url)
             self.newevents = simplejson.loads(resp.read())
-            oldids = map(attrgetter('id'), self.oldevents) if self.oldevents else []
+            oldids = map(itemgetter('id'), self.oldevents) if self.oldevents else []
             results = []
             for e in self.newevents:
-                if e['id'] not in oldids and e['event'] == 'closed':
+                if 'id' in e and e['id'] not in oldids and e['event'] == 'closed':
                     result = '{name} closed {proj} issue {num} ({url}) "{title}"!'.format(
                     proj=self.project,
                     name=e['actor']['login'], 
@@ -43,20 +43,19 @@ class IssuePoller():
                     title=e['issue']['title'])
                     results.append(result)
             self.oldevents = self.newevents
-            if not broadcast:
+            if not broadcast or not results:
                 return
             print 'Broadcasting...'
             for r in results: 
                 self.bot.broadcast(r)
                 # take 1 second sleep, to make sure we don't overflow the server
                 time.sleep(1)
-        except:
-            print u'Could not retrieve issues!'
+        except Exception, e:
+            print u'Could not retrieve issues: '
+            import traceback; print traceback.format_exc(e)
 
     def cancel(self):
         self.timer.cancel()
-        self.old.close()
-        self.new.close()
 
     def shorten(self, url):
         try:
