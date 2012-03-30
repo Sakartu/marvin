@@ -37,7 +37,7 @@ class IssuePoller():
                 if 'id' in e and e['id'] not in oldids:
                     if e['type'] != 'IssuesEvent':
                         continue
-                    if e['payload']['action'] == 'closed' or e['payload']['action'] == 'opened':
+                    if e['payload']['action'] in ['closed', 'opened', 'reopened']:
                         result = '{name} {action} {proj} issue {num} ({url}) "{title}"!'.format(
                         proj=self.project,
                         name=e['actor']['login'], 
