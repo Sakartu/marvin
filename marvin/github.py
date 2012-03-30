@@ -2,16 +2,18 @@ import simplejson
 import urllib2
 import urllib
 import constants
+import random
 from infinite_timer import InfiniteTimer
 from operator import itemgetter
 import time
 
 class IssuePoller():
-    def __init__(self, conf, bot, username, project):
+    def __init__(self, conf, bot, username, project, sneer=False):
         self.conf = conf
         self.bot = bot
         self.username = username
         self.project = project
+        self.sneer = sneer
         self.timer = InfiniteTimer(int(self.conf.polltime), self.poll, immediate=True)
         self.oldevents = []
         self.newevents = []
@@ -37,7 +39,8 @@ class IssuePoller():
                 if 'id' in e and e['id'] not in oldids:
                     if e['type'] != 'IssuesEvent':
                         continue
-                    if e['payload']['action'] in ['closed', 'opened', 'reopened']:
+                    action = e['payload']['action']
+                    if action in ['closed', 'opened', 'reopened']:
                         result = '{name} {action} {proj} issue {num} ({url}) "{title}"!'.format(
                         proj=self.project,
                         name=e['actor']['login'], 
@@ -46,6 +49,12 @@ class IssuePoller():
                         url=self.shorten(e['payload']['issue']['html_url']), 
                         title=e['payload']['issue']['title'])
                         results.append(result)
+                    if self.sneer:
+                        # Make him answer to his own events
+                        if action in constants.SNEER:
+                            remark = constants.SNEER[action][random.randint(
+                                1, len(constants.SNEER_CLOSED))]
+                            results.append(remark)
             self.oldevents = self.newevents
             if not broadcast or not results:
                 return
