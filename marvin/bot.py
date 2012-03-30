@@ -43,7 +43,7 @@ class MarvinFactory(protocol.ClientFactory):
         bot.handler = MessageHandler(self.conf, bot)
         self.pollers = []
         for (user, project) in self.conf.issues:
-            p = IssuePoller(self.conf, bot, user, project)
+            p = IssuePoller(self.conf, bot, user, project, project == 'marvin')
             print 'Built poller for {user}/{project}'.format(user=user, 
                     project=project)
             self.pollers.append(p)
