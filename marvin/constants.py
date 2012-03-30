@@ -26,3 +26,6 @@ ANSWERS = [
         "That young girl, is one of the least benightedly unintelligent organic life forms it has been my profound lack of pleasure not to be able to avoid meeting.",
         "Do you want me to sit in a corner and rust or just fall apart where I'm standing?",
         ]
+
+URL_ISSUE_EVENTS = 'https://api.github.com/repos/{user}/{project}/issues/events'
+URL_SHORTEN = 'http://git.io'
