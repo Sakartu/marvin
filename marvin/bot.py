@@ -14,6 +14,7 @@ class Marvin(irc.IRCClient):
             self.join(chan)
         print "Signed on as %s." % (self.nickname,)
         for p in self.factory.pollers:
+            print "Starting github pollers"
             p.start()
 
     def joined(self, channel):
@@ -35,7 +36,6 @@ class MarvinFactory(protocol.ClientFactory):
 
     def __init__(self, conf):
         self.conf = conf
-        print "Starting github pollers"
 
     def buildProtocol(self, addr):
         bot = Marvin()
