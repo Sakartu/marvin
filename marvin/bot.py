@@ -13,8 +13,8 @@ class Marvin(irc.IRCClient):
         for chan in self.factory.conf.channels:
             self.join(chan)
         print "Signed on as %s." % (self.nickname,)
+        print "Starting github pollers"
         for p in self.factory.pollers:
-            print "Starting github pollers"
             p.start()
 
     def joined(self, channel):
@@ -28,7 +28,7 @@ class Marvin(irc.IRCClient):
 
     def broadcast(self, msg):
         for chan in self.factory.conf.channels:
-            print chan, ':', msg
+            print chan, '->', msg
             self.msg(chan, msg)
 
 class MarvinFactory(protocol.ClientFactory):
