@@ -3,7 +3,8 @@ import random
 import constants
 
 class MessageHandler(object):
-    def __init__(self, bot):
+    def __init__(self, conf, bot):
+        self.conf = conf
         self.bot = bot
         self.handlers = {
                 '^{nick}.*?$'.format(nick=self.bot.nickname) 
