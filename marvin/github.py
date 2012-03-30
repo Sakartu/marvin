@@ -4,9 +4,7 @@ import urllib
 import constants
 from infinite_timer import InfiniteTimer
 from operator import attrgetter
-import tempfile
 import time
-
 
 class IssuePoller():
     def __init__(self, conf, bot, username, project):
@@ -15,9 +13,9 @@ class IssuePoller():
         self.username = username
         self.project = project
         self.timer = InfiniteTimer(int(self.conf.polltime), self.poll, immediate=True)
-        self.old = tempfile.NamedTemporaryFile(delete=True)
-        self.new = tempfile.NamedTemporaryFile(delete=True)
         self.poll(broadcast=False)
+        self.oldevents = []
+        self.newevents = []
 
     def start(self):
         self.timer.start()
@@ -32,12 +30,10 @@ class IssuePoller():
                 project=self.project)
         try:
             resp = urllib2.urlopen(url)
-            newevents = simplejson.loads(resp.read())
-            olddata = self.old.read()
-            oldevents = simplejson.load(olddata) if olddata else []
-            oldids = map(attrgetter('id'), oldevents) if oldevents else []
+            self.newevents = simplejson.loads(resp.read())
+            oldids = map(attrgetter('id'), self.oldevents) if self.oldevents else []
             results = []
-            for e in newevents:
+            for e in self.newevents:
                 if e['id'] not in oldids and e['event'] == 'closed':
                     result = '{name} closed {proj} issue {num} ({url}) "{title}"!'.format(
                     proj=self.project,
@@ -46,8 +42,7 @@ class IssuePoller():
                     url=self.shorten(e['issue']['html_url']), 
                     title=e['issue']['title'])
                     results.append(result)
-
-            simplejson.dump(newevents, self.old)
+            self.oldevents = self.newevents
             if not broadcast:
                 return
             print 'Broadcasting...'
