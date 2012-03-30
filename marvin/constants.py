@@ -26,6 +26,16 @@ ANSWERS = [
         "That young girl, is one of the least benightedly unintelligent organic life forms it has been my profound lack of pleasure not to be able to avoid meeting.",
         "Do you want me to sit in a corner and rust or just fall apart where I'm standing?",
         ]
+SNEER = { 'closed' : [ 
+            "So you finally fixed it huh?", 
+            "I was wondering when you'd fix that", 
+            "That one has been open for ages!",
+        ],
+         'opened' : [
+             "_another_ bug?",
+             "You're not very good at this programming stuff are you?",
+             ]
+        }
 
 URL_ISSUE_EVENTS = 'https://api.github.com/repos/{user}/{project}/events'
 URL_SHORTEN = 'http://git.io'
