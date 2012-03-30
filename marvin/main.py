@@ -6,6 +6,7 @@ from bot import MarvinFactory
 
 if __name__ == '__main__':
     args = config.parse_options()
-    reactor.connectTCP(args.server, args.port, 
-            MarvinFactory(args.channel, args.nick))
+    conf = config.parse_config(args)
+    factory = MarvinFactory(conf)
+    reactor.connectTCP(conf.server, conf.port, factory)
     reactor.run()
