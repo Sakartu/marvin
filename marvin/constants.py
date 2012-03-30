@@ -25,6 +25,15 @@ ANSWERS = [
         "Now the world has gone to bed, Darkness don't engulf my head, I can see by infrared, How I hate the night. Now I lay me down to sleep, Try to count electric sheep, Sweet dream wishes you can keep, How I hate the night.",
         "That young girl, is one of the least benightedly unintelligent organic life forms it has been my profound lack of pleasure not to be able to avoid meeting.",
         "Do you want me to sit in a corner and rust or just fall apart where I'm standing?",
+        "I have a million ideas. They all point to certain death.",
+        "Simple. I got very bored and depressed, so I went and plugged myself in to its external computer feed. I talked to the computer at great length and explained my view of the Universe to it. ... It committed suicide",
+        "I could calculate your chance of survival, but you won't like it.",
+        "I'd give you advice, but you wouldn't listen. No one ever does.",
+        "I ache, therefore I am.",
+        "You are one of the least benightedly unintelligent life forms it has been my profound lack of pleasure not to be able to avoid meeting.",
+        "Funny, how just when you think life can't possibly get any worse it suddenly does.",
+        "Here I am, brain the size of a planet and they ask me to take you down to the bridge. Call that job satisfaction? 'Cos I don't.",
+
         ]
 SNEER = { 'closed' : [ 
             "So you finally fixed it huh?", 
