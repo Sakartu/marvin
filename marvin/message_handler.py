@@ -8,12 +8,14 @@ class MessageHandler(object):
         self.conf = conf
         self.bot = bot
         self.handlers = [
-                ('^{nick}.*\?$'.format(nick=self.bot.nickname),
+                ('^{nick}: choose (.*)$'.format(nick=self.bot.nickname),
+                self.handle_choose),
+                ('^{nick}: yesno.*$'.format(nick=self.bot.nickname),
+                self.handle_yesno),
+                ('^.*{nick}.*\?$'.format(nick=self.bot.nickname),
                 self.handle_question),
                 ('^.*{nick}.*$'.format(nick=self.bot.nickname),
                 self.handle_mention),
-                ('^.*{nick}: choose (.*)$'.format(nick=self.bot.nickname),
-                self.handle_choose),
                 ]
 
     def handle(self, user, channel, msg):
@@ -32,11 +34,11 @@ class MessageHandler(object):
         self.bot.msg(channel, constants.ANSWERS[n])
 
     def handle_choose(self, user, channel, msg, m):
-        if len(m.groups):
+        if len(m.groups()):
             groups = shlex.split(m.group(1))
-            self.bot.msg(groups[random.randint(0, len(groups) - 1)])
+            self.bot.msg(channel, groups[random.randint(0, len(groups) - 1)])
         else:
-            self.bot.msg("I can't really pick something from nothing, now can I?")
+            self.bot.msg(channel, "I can't really pick something from nothing, now can I?")
 
     def handle_yesno(self, user, channel, msg, m):
-        self.bot.msg(random.choose(["Of course!", "Nah."]))
+        self.bot.msg(channel, random.choice(["Of course!", "Nah."]))
