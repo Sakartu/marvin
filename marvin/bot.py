@@ -1,6 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import protocol
 from message_handler import MessageHandler
+from input_handler import InputHandler
 from github import IssuePoller
 
 class Marvin(irc.IRCClient):
@@ -16,6 +17,7 @@ class Marvin(irc.IRCClient):
         print "Starting github pollers"
         for p in self.factory.pollers:
             p.start()
+        self.input_handler.start()
 
     def joined(self, channel):
         print "Joined %s." % (channel,)
@@ -41,6 +43,7 @@ class MarvinFactory(protocol.ClientFactory):
         bot = Marvin()
         bot.factory = self
         bot.handler = MessageHandler(self.conf, bot)
+        bot.input_handler = InputHandler(self.conf, bot)
         self.pollers = []
         for (user, project) in self.conf.issues:
             p = IssuePoller(self.conf, bot, user, project)
