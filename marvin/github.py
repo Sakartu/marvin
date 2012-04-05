@@ -63,7 +63,7 @@ class IssuePoller():
                 time.sleep(1)
         except Exception, e:
             print u'Could not retrieve issues: '
-            import traceback; print traceback.format_exc(e)
+            print e
 
     def cancel(self):
         self.timer.cancel()
