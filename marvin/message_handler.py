@@ -8,17 +8,17 @@ class MessageHandler(object):
         self.conf = conf
         self.bot = bot
         self.handlers = [
-                ('^{nick}: choose (.*)$'.format(nick=self.bot.nickname),
+                ('^{nick}: choose (.*)$'.format(nick=self.conf.nickname),
                 self.handle_choose),
-                ('^{nick}: yesno.*$'.format(nick=self.bot.nickname),
+                ('^{nick}: yesno.*$'.format(nick=self.conf.nickname),
                 self.handle_yesno),
-                ('^.*{nick}.*\?$'.format(nick=self.bot.nickname),
+                ('^.*{nick}.*\?$'.format(nick=self.conf.nickname),
                 self.handle_question),
-                ('^.*{nick}.*$'.format(nick=self.bot.nickname),
+                ('^.*{nick}.*$'.format(nick=self.conf.nickname),
                 self.handle_mention),
                 ]
 
-    def handle(self, user, channel, msg):
+    def handle_msg(self, user, channel, msg):
         for pattern, handler in self.handlers:
             m = re.compile(pattern).match(msg)
             if m:
@@ -27,18 +27,21 @@ class MessageHandler(object):
 
     def handle_question(self, user, channel, msg, m):
         n = random.randint(0, len(constants.EIGHTBALL) - 1) 
-        self.bot.msg(channel, constants.EIGHTBALL[n])
+        self.msg(channel, constants.EIGHTBALL[n])
 
     def handle_mention(self, user, channel, msg, m):
         n = random.randint(0, len(constants.ANSWERS) - 1) 
-        self.bot.msg(channel, constants.ANSWERS[n])
+        self.msg(channel, constants.ANSWERS[n])
 
     def handle_choose(self, user, channel, msg, m):
         if len(m.groups()):
             groups = shlex.split(m.group(1))
-            self.bot.msg(channel, groups[random.randint(0, len(groups) - 1)])
+            self.msg(channel, groups[random.randint(0, len(groups) - 1)])
         else:
-            self.bot.msg(channel, "I can't really pick something from nothing, now can I?")
+            self.msg(channel, "I can't really pick something from nothing, now can I?")
 
     def handle_yesno(self, user, channel, msg, m):
-        self.bot.msg(channel, random.choice(["Of course!", "Nah."]))
+        self.msg(channel, random.choice(["Of course!", "Nah."]))
+
+    def msg(self, channel, msg):
+        self.bot.connection.privmsg(channel, msg)
