@@ -1,7 +1,9 @@
-import re
-import random
 import constants
+import random
 import shlex
+import glob
+import re
+import os
 
 class MessageHandler(object):
     def __init__(self, conf, bot):
@@ -17,6 +19,7 @@ class MessageHandler(object):
                 ('^.*{nick}.*$'.format(nick=self.conf.nickname),
                 self.handle_mention),
                 ]
+        self.load_all()
 
     def handle_msg(self, user, channel, msg):
         for pattern, handler in self.handlers:
@@ -26,12 +29,12 @@ class MessageHandler(object):
                 return
 
     def handle_question(self, user, channel, msg, m):
-        n = random.randint(0, len(constants.EIGHTBALL) - 1) 
-        self.msg(channel, constants.EIGHTBALL[n])
+        n = random.randint(0, len(self.eightball) - 1) 
+        self.msg(channel, self.eightball[n])
 
     def handle_mention(self, user, channel, msg, m):
-        n = random.randint(0, len(constants.ANSWERS) - 1) 
-        self.msg(channel, constants.ANSWERS[n])
+        n = random.randint(0, len(self.answers) - 1) 
+        self.msg(channel, self.answers[n])
 
     def handle_choose(self, user, channel, msg, m):
         if len(m.groups()):
@@ -45,3 +48,23 @@ class MessageHandler(object):
 
     def msg(self, channel, msg):
         self.bot.connection.privmsg(channel, msg)
+
+    def load_all(self):
+        self.load_eightball()
+        self.load_answers()
+        self.load_sneer()
+
+    def load_eightball(self):
+        self.eightball = open(os.path.join(constants.BASE, 
+            '../resources/eightball')).readlines()
+
+    def load_answers(self):
+        self.answers = open(os.path.join(constants.BASE, 
+            '../resources/answers')).readlines()
+
+    def load_sneer(self):
+        self.sneer = {}
+        for f in glob.glob(os.path.abspath(os.path.join(constants.BASE, 
+            '../resources/sneer_*'))):
+            data = open(f).readlines()
+            self.sneer[os.path.basename(f)[6:]] = data

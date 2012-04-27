@@ -45,6 +45,12 @@ class MarvinTUI(threading.Thread, cmd.Cmd):
         print u'Join one or more channels given as arguments.'
         print u'usage: join [channel]...'
 
+    def do_reload(self, line=None):
+        self.bot.handler.load_all()
+
+    def help_reload(self):
+        print u'Reload all the resources (quotes and stuff)'
+
     def do_say(self, line=None):
         if not line:
             self.help_say()

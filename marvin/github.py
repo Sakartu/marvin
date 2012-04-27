@@ -49,9 +49,9 @@ class IssuePoller():
                         title=e['payload']['issue']['title'])
                         results.append(result)
                     # Make him answer to his own events
-                    if action in constants.SNEER:
-                        remark = constants.SNEER[action][random.randint(
-                            1, len(constants.SNEER[action]) - 1)]
+                    if action in self.bot.handler.sneer:
+                        remark = self.bot.handler.sneer[action][random.randint(
+                            1, len(self.bot.handler.sneer[action]) - 1)]
                         results.append(remark)
             self.oldevents = self.newevents
             if not broadcast or not results:
