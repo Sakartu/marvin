@@ -2,11 +2,12 @@ from ircbot import SingleServerIRCBot
 from message_handler import MessageHandler
 from github import IssuePoller
 import irclib
+import threading
 
 irclib.DEBUG = False
 
 class Marvin(SingleServerIRCBot):
-    def __init__(self, conf, tui):
+    def __init__(self, conf, tui, all_joined):
         SingleServerIRCBot.__init__(self, [(conf.server, conf.port)], 
                 conf.nickname, conf.nickname)
         self.conf = conf
@@ -14,6 +15,7 @@ class Marvin(SingleServerIRCBot):
         tui.bot = self
         self.handler = MessageHandler(conf, self)
         self.pollers = []
+        self.all_joined = all_joined
         self.joined = []
         for (user, project) in self.conf.issues:
             p = IssuePoller(conf, self, user, project)
@@ -34,7 +36,7 @@ class Marvin(SingleServerIRCBot):
     def on_join(self, c, e):
         self.joined.append(e.target())
         if self.joined == self.conf.channels:
-            self.tui.start()
+            self.all_joined.set()
 
     def on_privmsg(self, c, e):
         self.handle_msg(c, e)
@@ -51,3 +53,12 @@ class Marvin(SingleServerIRCBot):
     def broadcast(self, msg):
         for c in self.conf.channels:
            self.connection.privmsg(c, msg)
+
+class MarvinBot(threading.Thread):
+    def __init__(self, conf, tui, joined):
+        threading.Thread.__init__(self)
+        self.daemon = True
+        self.bot = Marvin(conf, tui, joined)
+
+    def run(self):
+        self.bot.start()

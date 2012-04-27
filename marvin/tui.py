@@ -1,13 +1,10 @@
 import threading
-import signal
 import util
 import cmd
 import sys
-import os
 
 class MarvinTUI(threading.Thread, cmd.Cmd):
     def __init__(self, conf):
-        threading.Thread.__init__(self)
         cmd.Cmd.__init__(self)
 
         self.conf = conf
@@ -16,12 +13,7 @@ class MarvinTUI(threading.Thread, cmd.Cmd):
         self.prompt = u'marvin$ '
         self.intro = u'Welcome to marvin, the depressed IRC bot'
         self.doc_header = u'Commands (press help <command> to get help):'
-        self.daemon = True
-        #self.use_rawinput = False
 
-    def run(self):
-        self.cmdloop()
- 
     def cmdloop(self):
         while self.running:
             try:
@@ -74,7 +66,11 @@ class MarvinTUI(threading.Thread, cmd.Cmd):
         '''
         Quits the program
         '''
-        os.kill(os.getpid(), signal.SIGINT)
+        print u'\nDisconnecting and exitting...'
+        if self.bot:
+            for p in self.bot.pollers:
+                p.cancel()
+            self.bot.die()
         sys.exit(0)
 
     def help_quit(self):
