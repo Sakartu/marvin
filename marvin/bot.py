@@ -9,7 +9,7 @@ irclib.DEBUG = False
 class Marvin(SingleServerIRCBot):
     def __init__(self, conf, tui, all_joined):
         SingleServerIRCBot.__init__(self, [(conf.server, conf.port)], 
-                conf.nickname, conf.nickname)
+                conf.nickname, conf.realname)
         self.conf = conf
         self.tui = tui
         tui.bot = self

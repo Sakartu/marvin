@@ -49,6 +49,7 @@ def parse_config(args):
     conf = parse_value(conf, parser, args, 'general', 'server')
     conf = parse_value(conf, parser, args, 'general', 'port')
     conf = parse_value(conf, parser, args, 'general', 'nickname')
+    conf = parse_value(conf, parser, args, 'general', 'realname')
     conf = parse_csvalue(conf, parser, args, 'general', 'channels')
     normalised = []
     for c in conf.channels:
