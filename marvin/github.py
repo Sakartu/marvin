@@ -56,7 +56,7 @@ class IssuePoller():
             self.oldevents = self.newevents
             if not broadcast or not results:
                 return
-            print 'Broadcasting...'
+            print '\nBroadcasting...'
             for r in results: 
                 self.bot.broadcast(r)
                 # take 1 second sleep, to make sure we don't overflow the server
