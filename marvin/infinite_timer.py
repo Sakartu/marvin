@@ -25,5 +25,8 @@ class InfiniteTimer(Thread):
                 self.function(*self.args, **self.kwargs)
 
     def cancel(self):
+        '''
+        Call this method to stop the timer prematurely
+        '''
         self.finished.set()
         
