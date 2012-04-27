@@ -1,8 +1,9 @@
 from ircbot import SingleServerIRCBot
 from message_handler import MessageHandler
 from github import IssuePoller
-import irclib
 import threading
+import irclib
+import util
 
 irclib.DEBUG = False
 
@@ -35,7 +36,8 @@ class Marvin(SingleServerIRCBot):
     
     def on_join(self, c, e):
         self.joined.append(e.target())
-        if self.joined == self.conf.channels:
+        print u'Joined ' + e.target() + '!'
+        if util.are_equal_lower(self.joined, self.conf.channels):
             self.all_joined.set()
 
     def on_privmsg(self, c, e):
