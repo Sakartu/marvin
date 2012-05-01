@@ -57,6 +57,7 @@ class IssuePoller():
             if not broadcast or not results:
                 return
             print '\nBroadcasting...'
+            print self.bot.tui.prompt
             for r in results: 
                 self.bot.broadcast(r)
                 # take 1 second sleep, to make sure we don't overflow the server
@@ -64,6 +65,7 @@ class IssuePoller():
         except Exception, e:
             print u'Could not retrieve issues: '
             print e
+            print self.bot.tui.prompt
 
     def cancel(self):
         self.timer.cancel()
