@@ -68,6 +68,15 @@ class MarvinTUI(threading.Thread, cmd.Cmd):
     def help_broadcast(self, line=None):
         pass
 
+    def do_status(self, line=None):
+        print u'The bot is known as {nick}({real})'.format(nick=self.conf.nickname, real=self.conf.realname)
+        print u'{nick} is joined in:'.format(nick=self.conf.nickname)
+        for i in self.conf.channels:
+            print i
+
+    def help_status(self, line=None):
+        print u'Print some status information about the bot, including which channels it\'s joined in'
+
     def do_quit(self, line=None):
         '''
         Quits the program
