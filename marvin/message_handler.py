@@ -12,7 +12,7 @@ class MessageHandler(object):
         self.handlers = [
                 ('^{nick}: choose (.*)$'.format(nick=self.conf.nickname),
                 self.handle_choose),
-                ('^{nick}: yesno.*$'.format(nick=self.conf.nickname),
+                ('^{nick}: yesno .*$'.format(nick=self.conf.nickname),
                 self.handle_yesno),
                 ('^.*{nick}.*\?$'.format(nick=self.conf.nickname),
                 self.handle_question),
