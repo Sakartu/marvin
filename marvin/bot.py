@@ -7,9 +7,10 @@ import util
 
 irclib.DEBUG = False
 
+
 class Marvin(SingleServerIRCBot):
     def __init__(self, conf, tui, all_joined):
-        SingleServerIRCBot.__init__(self, [(conf.server, conf.port)], 
+        SingleServerIRCBot.__init__(self, [(conf.server, conf.port)],
                 conf.nickname, conf.realname)
         self.conf = conf
         self.tui = tui
@@ -33,7 +34,7 @@ class Marvin(SingleServerIRCBot):
 
         for p in self.pollers:
             p.start()
-    
+
     def on_join(self, c, e):
         self.joined.append(e.target())
         print u'Joined ' + e.target() + '!'
@@ -54,7 +55,8 @@ class Marvin(SingleServerIRCBot):
 
     def broadcast(self, msg):
         for c in self.conf.channels:
-           self.connection.privmsg(c, msg)
+            self.connection.privmsg(c, msg)
+
 
 class MarvinBot(threading.Thread):
     def __init__(self, conf, tui, joined):

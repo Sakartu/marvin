@@ -5,6 +5,7 @@ import glob
 import re
 import os
 
+
 class MessageHandler(object):
     def __init__(self, conf, bot):
         self.conf = conf
@@ -29,11 +30,11 @@ class MessageHandler(object):
                 return
 
     def handle_question(self, user, channel, msg, m):
-        n = random.randint(0, len(self.eightball) - 1) 
+        n = random.randint(0, len(self.eightball) - 1)
         self.msg(channel, self.eightball[n])
 
     def handle_mention(self, user, channel, msg, m):
-        n = random.randint(0, len(self.answers) - 1) 
+        n = random.randint(0, len(self.answers) - 1)
         self.msg(channel, self.answers[n])
 
     def handle_choose(self, user, channel, msg, m):
@@ -41,7 +42,8 @@ class MessageHandler(object):
             groups = shlex.split(m.group(1))
             self.msg(channel, groups[random.randint(0, len(groups) - 1)])
         else:
-            self.msg(channel, "I can't really pick something from nothing, now can I?")
+            self.msg(channel, "I can't really pick something from nothing, "
+            "now can I?")
 
     def handle_yesno(self, user, channel, msg, m):
         self.msg(channel, random.choice(["Of course!", "Nah."]))
@@ -50,21 +52,23 @@ class MessageHandler(object):
         self.bot.connection.privmsg(channel, msg)
 
     def load_all(self):
+        print u'Reloading resources...'
         self.load_eightball()
         self.load_answers()
         self.load_sneer()
+        print u'Done!'
 
     def load_eightball(self):
-        self.eightball = open(os.path.join(constants.BASE, 
+        self.eightball = open(os.path.join(constants.BASE,
             '../resources/eightball')).readlines()
 
     def load_answers(self):
-        self.answers = open(os.path.join(constants.BASE, 
+        self.answers = open(os.path.join(constants.BASE,
             '../resources/answers')).readlines()
 
     def load_sneer(self):
         self.sneer = {}
-        for f in glob.glob(os.path.abspath(os.path.join(constants.BASE, 
+        for f in glob.glob(os.path.abspath(os.path.join(constants.BASE,
             '../resources/sneer_*'))):
             data = open(f).readlines()
             self.sneer[os.path.basename(f)[6:]] = data
