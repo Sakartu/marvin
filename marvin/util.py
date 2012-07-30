@@ -4,6 +4,7 @@ def get_channel(line):
     else:
         return '#' + line
 
+
 def are_equal_lower(l1, l2):
     '''
     A method that returns True if both lists contain only strings and each

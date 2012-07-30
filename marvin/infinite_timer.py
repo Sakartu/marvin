@@ -1,4 +1,6 @@
 from threading import Event, Thread
+
+
 class InfiniteTimer(Thread):
     '''
     A class, extending Thread, which behaves just like threading.Timer,
@@ -6,7 +8,8 @@ class InfiniteTimer(Thread):
     the timer again.
     '''
 
-    def __init__(self, interval, function, args=[], kwargs={}, immediate=False):
+    def __init__(self, interval, function, args=[], kwargs={},
+            immediate=False):
         Thread.__init__(self)
         self.interval = interval
         self.function = function
@@ -29,4 +32,3 @@ class InfiniteTimer(Thread):
         Call this method to stop the timer prematurely
         '''
         self.finished.set()
-        

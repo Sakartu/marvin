@@ -3,20 +3,25 @@ import argparse
 import constants
 from ConfigParser import SafeConfigParser
 
+
 def parse_options():
     parser = argparse.ArgumentParser(description=constants.DESCRIPTION)
-    parser.add_argument('-c', '--chan', dest='channel', 
-            help='Comma separated list of channels to join. Does not have to have a leading #.')
+    parser.add_argument('-c', '--chan', dest='channel',
+            help='Comma separated list of channels to join. Does not have to '
+            'have a leading #.')
     parser.add_argument('-s', '--server', dest='server',
             help='The server to connect to.')
     parser.add_argument('-p', '--port', dest='port', default=6667, type=int,
             help='The port to connect to. Optional, default is 6667.')
-    parser.add_argument('-n', '--nickname', dest='nickname', default='marvinbot',
-            help='The nickname the bot should have. Default is "marvin"')
+    parser.add_argument('-n', '--nickname', dest='nickname',
+            default='marvinbot', help='The nickname the bot should have. '
+            'Default is "marvin"')
     parser.add_argument('--config', dest='configpath', default='marvin.conf',
-            help='The location of the configuration file. Optional, default is marvin.conf')
+            help='The location of the configuration file. Optional, default '
+            'is marvin.conf')
     args = parser.parse_args()
     return args
+
 
 def parse_config(args):
     confpath = args.configpath
@@ -37,10 +42,10 @@ def parse_config(args):
     def parse_csvalue(conf, parser, args, section, value):
         result = []
         if value in dir(args) and getattr(args, value):
-            result = map(lambda x : tuple(x.split('/')), 
+            result = map(lambda x: tuple(x.split('/')),
                     getattr(args, value).split(','))
         else:
-            result = map(lambda x : tuple(x.split('/')), 
+            result = map(lambda x: tuple(x.split('/')),
                     parser.get(section, value).split(','))
         setattr(conf, value, result)
         return conf
@@ -61,6 +66,7 @@ def parse_config(args):
     conf = parse_csvalue(conf, parser, args, 'github', 'issues')
     return conf
 
+
 class Config(object):
     def __init__(self):
         self.server = ''
@@ -71,10 +77,9 @@ class Config(object):
         self.commits = []
 
     def __repr__(self):
-        result = self.nickname + '@' + self.server + ':' + str(self.port) + '\n'
+        result = self.nickname + '@' + self.server + ':' + str(self.port)
+        + '\n'
         result += 'Channels: ' + pprint.pformat(self.channels)
         result += '\nIssues: ' + pprint.pformat(self.issues)
         result += '\nCommits: ' + pprint.pformat(self.commits)
         return result
-        
-

@@ -3,6 +3,7 @@ import util
 import cmd
 import sys
 
+
 class MarvinTUI(threading.Thread, cmd.Cmd):
     def __init__(self, conf):
         cmd.Cmd.__init__(self)
@@ -69,13 +70,15 @@ class MarvinTUI(threading.Thread, cmd.Cmd):
         pass
 
     def do_status(self, line=None):
-        print u'The bot is known as {nick}({real})'.format(nick=self.conf.nickname, real=self.conf.realname)
+        print u'The bot is known as {nick}({real})'.format(
+                nick=self.conf.nickname, real=self.conf.realname)
         print u'{nick} is joined in:'.format(nick=self.conf.nickname)
         for i in self.conf.channels:
             print i
 
     def help_status(self, line=None):
-        print u'Print some status information about the bot, including which channels it\'s joined in'
+        print u'Print some status information about the bot, including which '
+        'channels it\'s joined in'
 
     def do_quit(self, line=None):
         '''
@@ -94,11 +97,13 @@ class MarvinTUI(threading.Thread, cmd.Cmd):
     def help_help(self):
         print u'Get help about a topic'
 
+
 class TUIException(Exception):
     '''
     A TUI exception
     '''
     pass
+
 
 class UserCancelled(TUIException):
     '''
