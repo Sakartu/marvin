@@ -50,20 +50,24 @@ def parse_config(args):
         setattr(conf, value, result)
         return conf
 
-    # Parse lists
-    conf = parse_value(conf, parser, args, 'general', 'server')
-    conf = parse_value(conf, parser, args, 'general', 'port')
-    conf = parse_value(conf, parser, args, 'general', 'nickname')
-    conf = parse_value(conf, parser, args, 'general', 'realname')
-    conf = parse_csvalue(conf, parser, args, 'general', 'channels')
+    # Parse configuration options
+    for v in ('server', 'port', 'nickname', 'realname'):
+        conf = parse_value(conf, parser, args, 'general', v)
+
+    for v in ('channels'):
+        conf = parse_csvalue(conf, parser, args, 'general', v)
+
+    for v in ('polltime'):
+        conf = parse_value(conf, parser, args, 'github', v)
+
+    for v in ('commits', 'issues'):
+        conf = parse_csvalue(conf, parser, args, 'github', v)
+
     normalised = []
     for c in conf.channels:
         normalised.append('#' + c[0] if not c[0].startswith('#') else c)
     conf.channels = normalised
 
-    conf = parse_value(conf, parser, args, 'github', 'polltime')
-    conf = parse_csvalue(conf, parser, args, 'github', 'commits')
-    conf = parse_csvalue(conf, parser, args, 'github', 'issues')
     return conf
 
 
