@@ -1,10 +1,9 @@
-import threading
 import util
 import cmd
 import sys
 
 
-class MarvinTUI(threading.Thread, cmd.Cmd):
+class MarvinTUI(cmd.Cmd):
     def __init__(self, conf):
         cmd.Cmd.__init__(self)
 
