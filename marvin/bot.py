@@ -1,11 +1,11 @@
-from ircbot import SingleServerIRCBot
+from irc.bot import SingleServerIRCBot
 from message_handler import MessageHandler
 from github import IssuePoller
 import threading
-import irclib
+import irc.client
 import util
 
-irclib.DEBUG = False
+irc.client.DEBUG = False
 
 
 class Marvin(SingleServerIRCBot):
