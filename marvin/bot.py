@@ -48,7 +48,7 @@ class Marvin(SingleServerIRCBot):
         self.handle_msg(c, e)
 
     def handle_msg(self, c, e):
-        user = irclib.nm_to_n(e.source())
+        user = irc.client.nm_to_n(e.source())
         channel = e.target()
         msg = e.arguments()[0]
         self.handler.handle_msg(user, channel, msg)
