@@ -74,10 +74,8 @@ def parse_config(args):
     for k in ('commits', 'issues'):
         conf = parse_csssvalue(conf, parser, args, 'github', k)
 
-    normalised = []
-    for c in conf.channels:
-        normalised.append('#' + c[0] if not c[0].startswith('#') else c)
-    conf.channels = normalised
+    conf.channels = ['#' + c if not c.startswith('#') else c
+            for c in conf.channels]
 
     return conf
 
