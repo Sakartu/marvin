@@ -27,7 +27,8 @@ class MarvinTUI(cmd.Cmd):
         while self.running:
             self.cmdwin.addstr(self.prompt)
             text = self.cmdwin.getstr()
-            self.onecmd(text)
+            if text:
+                self.onecmd(text)
 
     def do_join(self, line=None):
         if not line:
