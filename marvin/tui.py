@@ -2,6 +2,7 @@ import util
 import cmd
 import sys
 import curses
+import signal
 import curses.textpad
 import datetime
 
@@ -11,6 +12,7 @@ class MarvinTUI(cmd.Cmd):
         cmd.Cmd.__init__(self)
 
         self.setup_screens()
+        signal.signal(signal.SIGWINCH, self.setup_screens)
         self.reroute_stdio()
 
         self.conf = conf
@@ -90,22 +92,25 @@ class MarvinTUI(cmd.Cmd):
     def help_help(self):
         self.query(u'Get help about a topic')
 
-    def setup_screens(self):
+    def setup_screens(self, *args):
+        if args:
+            # This is a terminal resize
+            curses.endwin()
         self.screen = curses.initscr()
+        self.screen.clear()
         self.maxy, self.maxx = self.screen.getmaxyx()
 
         # Left screen
         self.left = self.screen.subwin(self.maxy, self.maxx / 2, 0, 0)
         self.left.box()
         self.left.addstr(0, 3, 'Commands')
-        self.left.leaveok(True)
-        self.left.idlok(True)
-        self.left.scrollok(True)
         innery, innerx = tuple(x + 1 for x in self.left.getbegyx())
         rows, cols = self.left.getmaxyx()
         innerrows = innery + rows - 3
         innercols = innerx + cols - 3
         self.cmdwin = self.left.subwin(innerrows, innercols, innery, innerx)
+        self.cmdwin.idlok(True)
+        self.cmdwin.scrollok(True)
 
         # Right screen
         self.right = self.screen.subwin(self.maxy, self.maxx / 2, 0,
