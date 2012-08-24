@@ -62,17 +62,17 @@ class IssuePoller():
             self.oldevents = self.newevents
             if not broadcast or not results:
                 return
-            print '\nBroadcasting...'
-            print self.bot.tui.prompt
+            self.bot.tui.msg('\nBroadcasting...')
+            self.bot.tui.msg(self.bot.tui.prompt)
             for r in results:
                 self.bot.broadcast(r)
                 # take 1 second sleep, to make sure we don't overflow the
                 # server
                 time.sleep(1)
         except Exception, e:
-            print u'Could not retrieve issues: '
-            print e
-            print self.bot.tui.prompt
+            self.bot.tui.msg(u'Could not retrieve issues: ')
+            self.bot.tui.msg(e)
+            self.bot.tui.msg(self.bot.tui.prompt)
 
     def cancel(self):
         self.timer.cancel()

@@ -11,7 +11,6 @@ import config
 if __name__ == '__main__':
     args = config.parse_options()
     conf = config.parse_config(args)
-    print u'Connecting to server...'
     all_joined = threading.Event()
     tui = MarvinTUI(conf)
     bot = MarvinBot(conf, tui, all_joined)

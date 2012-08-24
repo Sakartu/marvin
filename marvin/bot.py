@@ -22,13 +22,13 @@ class Marvin(SingleServerIRCBot):
         for (user, project) in self.conf.issues:
             p = IssuePoller(conf, self, user, project)
             self.pollers.append(p)
-            print u'Poller built for ' + user + '/' + project
+            self.tui.msg(u'Poller built for ' + user + '/' + project)
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + '_')
 
     def on_welcome(self, c, e):
-        print u'Connected, joining channels...'
+        self.tui.msg(u'Connected, joining channels...')
         for chan in self.conf.channels:
             c.join(chan)
 
@@ -37,7 +37,7 @@ class Marvin(SingleServerIRCBot):
 
     def on_join(self, c, e):
         self.joined.append(e.target())
-        print u'Joined ' + e.target() + '!'
+        self.tui.msg(u'Joined ' + e.target() + '!')
         if util.are_equal_lower(self.joined, self.conf.channels):
             self.all_joined.set()
 

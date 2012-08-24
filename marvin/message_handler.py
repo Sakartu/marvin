@@ -52,11 +52,11 @@ class MessageHandler(object):
         self.bot.connection.privmsg(channel, msg)
 
     def load_all(self):
-        print u'Reloading resources...'
+        self.bot.tui.msg(u'Reloading resources...')
         self.load_eightball()
         self.load_answers()
         self.load_sneer()
-        print u'Done!'
+        self.bot.tui.msg(u'Done!')
 
     def load_eightball(self):
         self.eightball = open(os.path.join(constants.BASE,
