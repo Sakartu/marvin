@@ -52,6 +52,7 @@ class MarvinTUI(cmd.Cmd):
             self.help_say()
             return
         (target, msg) = tuple(line.split(None, 1))
+        self.msg(u'Sending line to {0}'.format(target))
         self.bot.connection.privmsg(target, msg)
 
     def help_say(self):
