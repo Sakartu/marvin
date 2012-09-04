@@ -123,7 +123,9 @@ class MarvinTUI(cmd.Cmd):
         self.rightpad = curses.newpad(1000, self.padmaxx)
         self.rightscroll = 0
         self.screen.refresh()
-        self.msg('Setup done!')
+        if not args:
+            # This is not a terminal resize
+            self.msg('Setup done!')
 
     def reroute_stdio(self):
         query = self.query
