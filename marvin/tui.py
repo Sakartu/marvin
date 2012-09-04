@@ -126,6 +126,7 @@ class MarvinTUI(cmd.Cmd):
         if not args:
             # This is not a terminal resize
             self.msg('Setup done!')
+        self.redraw_pad()
 
     def reroute_stdio(self):
         query = self.query
@@ -143,6 +144,9 @@ class MarvinTUI(cmd.Cmd):
         m = datetime.datetime.now().strftime('[%x %X]: ') + unicode(m)
         self.rightpad.addstr(m if m.endswith('\n') else m + '\n')
         self.rightscroll += 1
+        self.redraw_pad()
+
+    def redraw_pad(self):
         offset = self.rightscroll - self.padmaxy + 2
         self.rightpad.refresh(offset, 0, 1, self.padmaxx + 1,
                 self.padmaxy - 2, self.maxx - 2)
